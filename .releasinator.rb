@@ -6,8 +6,13 @@ configatron.prerelease_checklist_items = [
 # The directory where all distributed docs are.  Default is '.'
 # configatron.base_docs_dir = '.'
 
+def build_method
+  command("ls -al")
+end
+
 # The command that builds the sdk.  Required.
-configatron.build_method = 'ls -al'
+configatron.build_method = method(:build_method)
+
 
 def publish_to_package_manager(version)
   sleep 1
@@ -22,11 +27,8 @@ configatron.publish_to_package_manager_method = method(:publish_to_package_manag
 configatron.downstream_repos = [
   DownstreamRepo.new(
     name="test-downstream",
-    url="git@github.com:braebot/test-downstream.git",
+    url="https://github.com/braebot/test-downstream.git",
     branch="master",
-    files_to_copy=[],
-    post_copy_methods=[],
-    build_methods=[],
     release_to_github=true
   )
 ]
