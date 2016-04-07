@@ -18,7 +18,6 @@ end
 configatron.build_method = method(:build_method)
 
 def publish_to_package_manager(version)
-  sleep 1
   puts "done publishing yay!"
 end
 
@@ -31,17 +30,29 @@ configatron.release_to_github = true
 # Distribution GitHub repo if different from the source repo. Optional.
 configatron.downstream_repos = [
   DownstreamRepo.new(
-    "test-downstream",
+    "test-paypal",
     "git@github.paypal.com:jbrateman/test-paypal.git",
     "master",
 
     :release_to_github => true
   ),
   DownstreamRepo.new(
-    "test-downstream2",
+    "test-downstream",
     "git@github.com:braebot/test-downstream.git",
     "master",
     # create a new branch with the specified name, rather than tagging
     :new_branch_name => "test-release-__VERSION__"
   )
 ]
+
+def build_docs
+  command("mkdir docs/")
+  command("date > docs/index.html")
+end
+
+configatron.doc_build_method = method(:build_docs)
+configatron.doc_target_dir = "downstream_repos/test-downstream"
+configatron.doc_files_to_copy = [
+  CopyFile.new("docs/index.html", ".", ".")
+]
+
